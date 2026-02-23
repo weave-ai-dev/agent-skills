@@ -51,23 +51,31 @@ Add Pylon's MCP server to your agent config. See `references/setup.md` for per-a
 
 Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 
+## Golden Rule
+
+**New user request = new project. Always omit `document_id` on the first push.** The server auto-creates a fresh document every time you call `push_plan` without `document_id`. Never look up or reuse document IDs from previous conversations or tasks.
+
 ## Key Principles
 
 1. **Native MCP calls only.** Never write scripts or temp files to interact with Pylon.
 2. **Always set `source`.** Identify yourself (e.g. "claude-code", "backend-dev") so the human knows which agent produced each document.
 3. **Always set `context`.** Summarize your conversation — helps the web UI's AI make better suggestions.
-4. **Document auto-creation.** `push_plan` without `document_id` creates a new document. Pass `document_id` explicitly to update.
+4. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.
 5. **Session memory.** After a push, the session remembers the current document for subsequent pulls.
 
 ## Quick Workflow
 
 ```
 1. push_plan(plan="...", source="claude-code", group="my-project", context="...")
-   → Creates document + project, returns document_id + URL
+   → Creates NEW document + project, returns document_id + URL
+   → NEVER pass document_id here — let the server create a fresh document
 2. Human reviews, comments, edits at the URL
 3. pull_plan()
    → Returns reviewed content, decisions, plain_text
 4. Proceed with the approved plan
+5. If human requests changes:
+   push_plan(document_id="<id-from-step-1>", plan="...", context="Updated based on feedback...")
+   → Only now pass document_id to update the SAME document
 ```
 
 See `references/plan-workflow.md` for re-push, versioning, and advanced patterns.

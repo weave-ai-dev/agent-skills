@@ -1,11 +1,13 @@
 # Plan Workflow
 
-## First Push (new topic)
+## Starting a New Task (default)
+
+Every new user request should start with a fresh push — **never reuse document IDs from previous tasks or conversations**.
 
 ```
 1. Agent generates a plan
 2. push_plan(plan="...", source="claude-code", context="User wants to...", group="my-project")
-   → Server auto-creates document + project + v1
+   → Do NOT pass document_id — the server creates a new document automatically
    → Returns document_id, URL, project_id
 3. update_project(project="my-project", description="Brief description for reviewers")
 4. Human reviews at the returned URL
@@ -15,20 +17,20 @@
 7. Agent proceeds with the approved plan
 ```
 
-## Re-push (updated plan)
+## Re-push (revising based on feedback)
 
-When revising based on feedback, always pass `document_id` to update the existing document:
+Only pass `document_id` when updating the **same document within the same task** after receiving human feedback:
 
 ```
 1. Agent revises plan based on pull_plan feedback
-2. push_plan(document_id="<id>", plan="...", context="Updated based on feedback...")
+2. push_plan(document_id="<id-from-original-push>", plan="...", context="Updated based on feedback...")
    → Overwrites content, creates next version (v2, v3, ...)
 3. Human sees live-refresh banner and reviews the new version
 ```
 
-## New Topic (different plan)
+## New Topic (different plan entirely)
 
-When switching to a completely different topic:
+When switching to a completely different topic mid-session:
 
 ```
 1. push_plan(plan="...", create_new=true, context="...")
