@@ -16,7 +16,7 @@ Push a proposed plan for human review. Every push auto-creates a version snapsho
 
 **Returns:** `document_id`, `title`, `url`, `version`, `project`, `project_id`, `action` ("created" or "updated")
 
-## pull_final_plan
+## pull_plan
 
 Pull the latest content from a document after human review. **Auto-snapshots** the current state as a new version.
 

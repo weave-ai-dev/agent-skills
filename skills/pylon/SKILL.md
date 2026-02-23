@@ -7,7 +7,7 @@ metadata:
   version: "1.0.0"
   organization: Weave AI
   date: February 2026
-  abstract: Reference guide for Pylon's MCP tools. Covers push_plan, pull_final_plan, push_code_review, pull_code_feedback, list_documents, list_versions, use_document, update_project, and release_document.
+  abstract: Reference guide for Pylon's MCP tools. Covers push_plan, pull_plan, push_code_review, pull_code_feedback, list_documents, list_versions, use_document, update_project, and release_document.
 ---
 
 # Pylon
@@ -19,7 +19,7 @@ Pylon is an AI-to-human review bridge. AI agents push proposed plans and code di
 | Tool | Purpose |
 |---|---|
 | `push_plan` | Push a plan for human review. Auto-creates doc + project + version. |
-| `pull_final_plan` | Pull reviewed content with decisions and feedback. |
+| `pull_plan` | Pull reviewed content with decisions and feedback. |
 | `push_code_review` | Push file diffs for side-by-side code review. |
 | `pull_code_feedback` | Pull line-specific review comments grouped by file. |
 | `list_documents` | List documents, filter by title or project. |
@@ -65,7 +65,7 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 1. push_plan(plan="...", source="claude-code", group="my-project", context="...")
    → Creates document + project, returns document_id + URL
 2. Human reviews, comments, edits at the URL
-3. pull_final_plan()
+3. pull_plan()
    → Returns reviewed content, decisions, plain_text
 4. Proceed with the approved plan
 ```

@@ -14,7 +14,7 @@ Projects are first-class entities that group related documents. Created via the 
 
 Each MCP session holds an advisory lock on documents it operates on. Prevents multiple terminal sessions from conflicting on the same document.
 
-- **Automatic**: `push_plan`, `pull_final_plan`, `use_document` auto-acquire locks.
+- **Automatic**: `push_plan`, `pull_plan`, `use_document` auto-acquire locks.
 - **Exclusive**: If another session holds the lock → `document_locked` error with expiry info.
 - **TTL**: Locks expire after 30 minutes of inactivity. No heartbeat needed.
 - **Force unlock**: `force_unlock: true` clears a stale lock from a dead session. Only clears session locks — does NOT bypass web editing guard.
@@ -29,7 +29,7 @@ When a human is actively editing in the web UI, terminal pushes are blocked to p
 
 - **How it works**: Web auto-save sets a `web_edited_at` timestamp. If a terminal `push_plan` arrives within 5 minutes, it's rejected with `web_editing_active`.
 - **Error response**: `{ error: "web_editing_active", message: "...", web_edited_at: "...", retry_after_ms: <remaining> }`
-- **Clearing**: Human clicks "Snapshot" in the web UI, or terminal calls `pull_final_plan`. Both clear the flag.
+- **Clearing**: Human clicks "Snapshot" in the web UI, or terminal calls `pull_plan`. Both clear the flag.
 - **TTL expiry**: If the human stops editing for 5+ minutes, the guard expires.
 - **force_unlock does NOT bypass this**: Only clears stale session locks.
 

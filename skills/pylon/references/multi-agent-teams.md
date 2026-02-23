@@ -38,7 +38,7 @@ frontend-dev:
 - **All agents use the same `group`.** Groups everything under one project in the web UI.
 - **Session group is sticky.** First value wins — subagents cannot override.
 - **Re-pushes need explicit `document_id`.** Without it, you create a duplicate.
-- **Pull from your own doc.** `pull_final_plan(document_id="<my-doc-id>")`
+- **Pull from your own doc.** `pull_plan(document_id="<my-doc-id>")`
 - **Always set `source`.** Lets the human reviewer identify each agent.
 - **Always set `context`.** Give the reviewer enough background for each agent's work.
 

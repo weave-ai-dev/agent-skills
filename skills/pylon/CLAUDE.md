@@ -9,7 +9,7 @@ pylon/
 ├── CLAUDE.md                           # Copy of AGENTS.md
 └── references/
     ├── setup.md                        # MCP setup for Claude Code, Cursor, etc.
-    ├── tools-plan.md                   # push_plan, pull_final_plan parameters
+    ├── tools-plan.md                   # push_plan, pull_plan parameters
     ├── tools-code-review.md            # push_code_review, pull_code_feedback parameters
     ├── tools-management.md             # list_documents, list_versions, use_document, etc.
     ├── plan-workflow.md                # Plan push/pull lifecycle and patterns

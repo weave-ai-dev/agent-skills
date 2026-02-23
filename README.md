@@ -31,7 +31,7 @@ MCP tools for pushing plans, code reviews, and pulling human feedback. Teaches y
 | Tool | Purpose |
 |---|---|
 | `push_plan` | Push a plan for human review |
-| `pull_final_plan` | Pull reviewed content with decisions |
+| `pull_plan` | Pull reviewed content with decisions |
 | `push_code_review` | Push file diffs for code review |
 | `pull_code_feedback` | Pull line-specific review comments |
 | `list_documents` | List and filter documents |
