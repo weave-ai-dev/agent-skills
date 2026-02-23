@@ -1,0 +1,17 @@
+{
+  "name": "weave-agent-skills",
+  "version": "1.0.0",
+  "description": "Official Pylon agent skills — AI-to-human review bridge via MCP",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weave-ai-dev/agent-skills"
+  },
+  "keywords": [
+    "agent-skills",
+    "mcp",
+    "pylon",
+    "code-review",
+    "ai-agents"
+  ]
+}
