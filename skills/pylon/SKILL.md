@@ -59,7 +59,7 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 
 1. **Native MCP calls only.** Never write scripts or temp files to interact with Pylon.
 2. **Always set `source`.** Identify yourself (e.g. "claude-code", "backend-dev") so the human knows which agent produced each document.
-3. **Always set `context`.** Summarize your conversation — helps the web UI's AI make better suggestions.
+3. **`context` must be informative on every push.** Summarize the user's goal, relevant decisions, and why this change matters. The web UI's AI uses this to make better suggestions — make it useful and insightful, not mechanical. Never describe the MCP action itself (e.g. "re-pushing to update") — always describe the intent behind the work.
 4. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.
 5. **Always pass `document_id` explicitly** on `pull_plan`, `push_plan` (updates), and `pull_code_feedback`. Do not rely on the session remembering your current document — sessions can be lost.
 
