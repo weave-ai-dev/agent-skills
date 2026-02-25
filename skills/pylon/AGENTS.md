@@ -46,7 +46,7 @@ Pylon is an AI-to-Web review bridge. AI agents push proposed plans via MCP; huma
 
 ## Session Recovery
 
-On error `-32001: Session expired`: **NEVER retry the failed call.** Instead: call `list_documents()` to re-establish a session, then retry with `document_id` passed explicitly. Always pass `document_id` on every call — don't rely on session memory.
+Sessions auto-recover transparently after server restarts, but convenience state (`currentDocumentId`, `sessionGroup`) resets. Always pass `document_id`, `code_review_id`, and `group` explicitly on every call — don't rely on session memory.
 
 ## Slash Commands
 

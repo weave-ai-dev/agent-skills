@@ -7,15 +7,16 @@ After a plan is approved, agents write code and push file diffs back to Pylon fo
 ```
 1. Plan approved → Agent writes code
 2. push_code_review(files=[...], plan_document_id="<plan-id>", source="backend-dev", group="my-project")
+   → Always pass plan_document_id if this code review is linked to a plan
    → Creates code review document, returns code_review_id + URL
-3. Human reviews at /code-reviews/{id}
-   - Sees side-by-side diffs in Monaco editor (read-only)
-   - Selects lines and leaves threaded comments
-   - Clicks "Approve" or "Request Changes"
-4. pull_code_feedback(code_review_id="<id>")
-   → Gets review_status + line-specific feedback grouped by file
+3. Share the URL with the user and STOP.
+   → Do NOT poll, wait, loop, or use extended thinking while waiting for review.
+   → The user will come back and ask you to pull when they are ready.
+4. pull_code_feedback(code_review_id="<id-from-step-2>")
+   → Always pass code_review_id explicitly — don't rely on session memory
+   → Returns review_status + line-specific feedback grouped by file
 5. If changes_requested: agent fixes code, pushes updated diffs:
-   push_code_review(code_review_id="<id>", files=[...])
+   push_code_review(code_review_id="<id-from-step-2>", files=[...])
    → Updates the code review, creates next version
 6. Repeat steps 3-5 until approved
 ```

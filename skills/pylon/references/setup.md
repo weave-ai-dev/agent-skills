@@ -30,6 +30,22 @@ claude mcp add pylon --transport streamable-http \
   --header "Authorization: Bearer YOUR_TOKEN"
 ```
 
+## OpenAI Codex
+
+Add to `codex.toml` in your project root (or `~/.codex/codex.toml` for global):
+
+```toml
+[mcp_servers.pylon]
+type = "streamable-http"
+url = "https://your-pylon-instance.com/api/mcp"
+bearer_token_env_var = "PYLON_TOKEN"
+```
+
+Set the environment variable:
+```bash
+export PYLON_TOKEN="YOUR_TOKEN"
+```
+
 ## Cursor / Windsurf / Generic MCP Client
 
 Set the environment variable and configure the MCP endpoint:

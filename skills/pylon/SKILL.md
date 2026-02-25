@@ -109,12 +109,6 @@ See `references/multi-agent-teams.md` for team/swarm coordination.
 - **Code reviews** use side-by-side Monaco diffs with line-specific threaded comments. See `references/code-review-workflow.md`.
 ## Session Recovery
 
-MCP sessions are in-memory — lost after `/clear`, `/compact`, dev server restart, or deploy.
+MCP sessions are in-memory — lost after `/clear`, `/compact`, dev server restart, or deploy. The server auto-recovers expired sessions transparently, but convenience state (`currentDocumentId`, `sessionGroup`) resets to null.
 
-**When you get error `-32001: Session expired`:**
-
-1. **NEVER retry the failed call.** Repeating the same tool call will return the same error every time.
-2. Call `list_documents()` to re-establish a session and find your existing work.
-3. Retry your original operation **with `document_id` passed explicitly**.
-
-You should already have the `document_id` from the original `push_plan` response. Always pass it explicitly — this makes your calls resilient to session loss.
+**Always pass IDs explicitly** — `document_id` on `pull_plan`/`push_plan` updates, `code_review_id` on `pull_code_feedback`, and `group` on every push. This makes your calls fully resilient to session loss with zero recovery steps needed.

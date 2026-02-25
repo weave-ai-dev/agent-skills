@@ -37,27 +37,28 @@ When a human is actively editing in the web UI, terminal pushes are blocked to p
 
 ## MCP Connection Recovery
 
-The Pylon MCP server uses in-memory sessions. Sessions are lost when:
+The Pylon MCP server uses in-memory sessions. Sessions can be lost when:
 - The server restarts or redeploys
 - The conversation is cleared (`/clear`) or compacted (`/compact`)
-- The session TTL (1 hour) expires
+- The session TTL (1 hour) expires with no requests
 
-**Stale session auto-recovery:**
+**Transparent auto-recovery:**
 
-The server handles expired sessions gracefully — no HTTP 404 errors that break the MCP client:
+The server automatically recovers expired sessions. Tool calls with a stale session ID are handled transparently — the server creates a fresh session behind the scenes and processes the request normally. You will not see errors.
 
-- **`initialize` requests** with a stale session ID automatically create a new session. The client picks up the new session ID from the response header.
-- **Tool calls** (e.g. `push_plan`, `pull_plan`) with a stale session ID receive a JSON-RPC error (code -32001, "Session expired") instead of HTTP 404. This allows the MCP client to surface the error normally and re-initialize.
+**What is lost on recovery:**
 
-**When you get a session-expired error:**
+Convenience state resets to null: `currentDocumentId`, `currentCodeReviewId`, `sessionGroup`. This means:
+- Calls that rely on implicit document context (e.g. `pull_plan()` with no `document_id`) will fail.
+- Session group (project) is no longer sticky — pass `group` again on the next push.
 
-1. **Do NOT panic or tell the user the server is down.** This is normal after `/clear`, `/compact`, or a deploy.
-2. **The MCP client should automatically re-initialize** a new session. If it doesn't, ask the user to run `/mcp` to restart the MCP connection.
-3. **You lose no data.** Documents, projects, versions, and comments are all persisted in the database. Only the ephemeral session state (current document, session group, session locks) is lost.
-4. **After reconnection, resume by discovering existing work:**
-   - Call `list_documents()` to see all your documents and projects.
-   - Call `list_documents(group="project-name")` to find documents in a specific project.
-   - Call `use_document(document_id="...")` to set context on an existing document.
-   - Call `pull_plan(document_id="...")` to get the latest content and any human feedback.
-   - Pass `group` again on the next `push_plan` to re-associate with the project (session group resets on reconnect).
-   - For a brand new task: just call `push_plan` without `document_id` as usual.
+**What is NOT lost:**
+
+Documents, projects, versions, comments, and locks are all persisted in the database. Only ephemeral session state is lost.
+
+**Best practice — always pass IDs explicitly:**
+
+- Pass `document_id` on every `pull_plan` and `push_plan` (update) call.
+- Pass `code_review_id` on every `pull_code_feedback` call.
+- Pass `group` on every push to re-associate with the project.
+- This makes your calls fully resilient to session loss — no recovery steps needed.

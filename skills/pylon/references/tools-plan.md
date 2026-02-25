@@ -27,9 +27,9 @@ Pull the latest content from a document after human review. **Auto-snapshots** t
 | `force_unlock` | No | Clear a stale lock. Only applies to live doc pulls (no version). |
 
 **Returns:**
-- `title`, `content`, `updated_at` — the document data
-- `plain_text` — plain text extracted from TipTap JSON (no markup)
+- `title`, `markdown`, `updated_at` — the document data (`markdown` is the plan rendered as readable markdown)
 - `decisions` — array of resolved threads: `{ thread_id, anchor_text, status, messages: [{ author_type, content }] }`
+- `feedback` — array of open/unresolved threads (same shape as decisions) — comments the agent should address
 - `terminal_context` — the conversation context set during push
 - `version` — version number of the auto-created snapshot
 - `web_editing_active` — (boolean) present if human had unsnaphotted web edits

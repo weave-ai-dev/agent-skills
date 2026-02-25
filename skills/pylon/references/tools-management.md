@@ -40,8 +40,9 @@ Update a project's metadata. Projects group related documents.
 | `project` | Yes | Current project name. |
 | `description` | No | New description displayed on the project header. |
 | `rename` | No | Rename the project. Updates all documents. |
+| `archive` | No | Set `true` to archive, `false` to unarchive. Archived projects block all push/pull operations. |
 
-**Returns:** `project` (new name), `project_id`, `description`, `renamed_from` (if renamed).
+**Returns:** `project` (new name), `project_id`, `description`, `renamed_from` (if renamed), `archived` (if changed).
 
 ## release_document
 

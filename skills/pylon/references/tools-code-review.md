@@ -11,6 +11,8 @@ Push file diffs for human code review. Creates a `code_review` document with ful
 | `plan_document_id` | No | Link to the parent plan document. |
 | `title` | No | Title for the code review. Auto-generated from file paths if omitted. |
 | `summary` | No | Brief summary of what the changes do. |
+| `description` | No | Summary of what the changes do and why. Include intent, approach, and key decisions. |
+| `commit_message` | No | Draft commit message for these changes. Shown to the reviewer alongside the diff. |
 | `context` | No | Terminal conversation context for the web UI. |
 | `source` | No | Agent identifier (e.g. "backend-dev"). |
 | `group` | No | Project name. Sticky per session. |
@@ -50,4 +52,5 @@ Pull human feedback from a code review. Returns threads grouped by file path.
 - `review_status` — "open", "approved", "changes_requested", "rejected"
 - `feedback` — object keyed by file path, each with: `thread_id`, `line_start`, `line_end`, `anchor_text`, `resolved`, `messages[]`
 - `unresolved_count` — number of open threads
+- `resolved_count` — number of resolved threads
 - `plan_document_id` — linked plan if any
