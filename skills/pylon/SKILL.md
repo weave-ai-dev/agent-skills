@@ -71,8 +71,8 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
    → NEVER pass document_id here — let the server create a fresh document
 2. Human reviews, comments, edits at the URL
 3. pull_plan()
-   → Returns reviewed content, decisions, plain_text
-4. Proceed with the approved plan
+   → Returns markdown (readable plan), decisions (resolved threads), feedback (open threads to address)
+4. Address any feedback, then proceed with the approved plan
 5. If human requests changes:
    push_plan(document_id="<id-from-step-1>", plan="...", context="Updated based on feedback...")
    → Only now pass document_id to update the SAME document
