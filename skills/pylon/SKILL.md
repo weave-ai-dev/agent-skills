@@ -61,7 +61,7 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 2. **Always set `source`.** Identify yourself (e.g. "claude-code", "backend-dev") so the human knows which agent produced each document.
 3. **Always set `context`.** Summarize your conversation — helps the web UI's AI make better suggestions.
 4. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.
-5. **Session memory.** After a push, the session remembers the current document for subsequent pulls.
+5. **Always pass `document_id` explicitly** on `pull_plan`, `push_plan` (updates), and `pull_code_feedback`. Do not rely on the session remembering your current document — sessions can be lost.
 
 ## Quick Workflow
 
@@ -69,13 +69,32 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 1. push_plan(plan="...", source="claude-code", group="my-project", context="...")
    → Creates NEW document + project, returns document_id + URL
    → NEVER pass document_id here — let the server create a fresh document
-2. Human reviews, comments, edits at the URL
-3. pull_plan()
+2. Share the document URL with the user and STOP.
+   → Do NOT poll, wait, loop, or use extended thinking while waiting.
+   → Do NOT "stand by" for review — just tell the user the URL and finish your turn.
+   → The user will come back and ask you to pull when they are ready.
+3. pull_plan(document_id="<id-from-step-1>")  (only when the user asks)
+   → Always pass document_id explicitly — don't rely on session memory
    → Returns markdown (readable plan), decisions (resolved threads), feedback (open threads to address)
 4. Address any feedback, then proceed with the approved plan
 5. If human requests changes:
    push_plan(document_id="<id-from-step-1>", plan="...", context="Updated based on feedback...")
-   → Only now pass document_id to update the SAME document
+   → Always pass document_id to update the SAME document
+```
+
+## Code Review Workflow
+
+```
+1. push_code_review(files=[...], source="claude-code", group="my-project",
+     plan_document_id="<plan-doc-id>")
+   → Always pass plan_document_id if this code review is associated with a plan
+   → Links the code review to the plan in the UI for traceability
+   → Returns code_review_id + URL
+2. Share the URL with the user and STOP (same rules as push_plan).
+3. pull_code_feedback(code_review_id="<id-from-step-1>")
+   → Always pass code_review_id explicitly
+   → Returns threads grouped by file_path with line ranges and comments
+4. Address feedback, re-push with code_review_id to update the same review.
 ```
 
 See `references/plan-workflow.md` for re-push, versioning, and advanced patterns.
@@ -88,4 +107,14 @@ See `references/multi-agent-teams.md` for team/swarm coordination.
 - **Session locking** prevents terminal session conflicts (30-min TTL). See `references/projects-and-sessions.md`.
 - **Web editing guard** blocks terminal pushes while a human is editing (5-min TTL). Human is never locked out.
 - **Code reviews** use side-by-side Monaco diffs with line-specific threaded comments. See `references/code-review-workflow.md`.
-- **Connection recovery**: MCP sessions are in-memory — lost after `/clear`, `/compact`, or deploy. The server auto-recovers stale sessions: `initialize` requests transparently create a new session; tool calls return a JSON-RPC error prompting re-initialization (no HTTP 404). Resume by calling `list_documents()` to find existing work, then `use_document()` to restore context. See `references/projects-and-sessions.md`.
+## Session Recovery
+
+MCP sessions are in-memory — lost after `/clear`, `/compact`, dev server restart, or deploy.
+
+**When you get error `-32001: Session expired`:**
+
+1. **NEVER retry the failed call.** Repeating the same tool call will return the same error every time.
+2. Call `list_documents()` to re-establish a session and find your existing work.
+3. Retry your original operation **with `document_id` passed explicitly**.
+
+You should already have the `document_id` from the original `push_plan` response. Always pass it explicitly — this makes your calls resilient to session loss.

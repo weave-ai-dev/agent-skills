@@ -24,13 +24,17 @@ Pylon is an AI-to-Web review bridge. AI agents push proposed plans via MCP; huma
 |---|---|
 | `push_plan` | Push a plan for human review (auto-creates doc + project) |
 | `pull_plan` | Pull reviewed markdown, decisions, and open feedback |
-| `push_code_review` | Push file diffs for human code review (side-by-side Monaco diff) |
+| `push_code_review` | Push file diffs for code review. Always pass `plan_document_id` if linked to a plan |
 | `pull_code_feedback` | Pull line-specific feedback from a code review |
 | `list_documents` | List user's documents, filter by title or project |
 | `list_versions` | List version snapshots for a document |
 | `use_document` | Switch session's current document context |
 | `update_project` | Update project description or rename |
 | `release_document` | Release session lock on a document |
+
+## After Pushing
+
+**Do NOT wait, poll, loop, or use extended thinking after pushing a plan or code review.** Share the document URL with the user and finish your turn. The user will ask you to pull when they are ready. Burning tokens while "standing by" provides zero value.
 
 ## Key Concepts
 
@@ -39,6 +43,10 @@ Pylon is an AI-to-Web review bridge. AI agents push proposed plans via MCP; huma
 - **Session locking**: Advisory locks prevent terminal session conflicts. 30-min TTL.
 - **Web editing guard**: Terminal pushes blocked while human is actively editing (5-min TTL). Human is never locked out.
 - **Multi-agent teams**: Master sets `group`, all subagents push to same project. Each agent gets its own document/code review.
+
+## Session Recovery
+
+On error `-32001: Session expired`: **NEVER retry the failed call.** Instead: call `list_documents()` to re-establish a session, then retry with `document_id` passed explicitly. Always pass `document_id` on every call — don't rely on session memory.
 
 ## Slash Commands
 
