@@ -34,3 +34,25 @@ When a human is actively editing in the web UI, terminal pushes are blocked to p
 - **force_unlock does NOT bypass this**: Only clears stale session locks.
 
 **When you get `web_editing_active`**: Tell the user a human is reviewing. Wait for snapshot or TTL expiry, then retry.
+
+## MCP Connection Recovery
+
+The Pylon MCP server uses in-memory sessions. Sessions are lost when:
+- The server restarts or redeploys
+- The conversation is cleared (`/clear`) or compacted (`/compact`)
+- The session TTL (1 hour) expires
+
+**When you get a connection error or 404 on `/api/mcp`:**
+
+1. **Do NOT panic or tell the user the server is down.** This is normal after `/clear`, `/compact`, or a deploy.
+2. **The MCP client should automatically re-initialize** a new session. If it doesn't, ask the user to run `/mcp` to restart the MCP connection.
+3. **You lose no data.** Documents, projects, versions, and comments are all persisted in the database. Only the ephemeral session state (current document, session group, session locks) is lost.
+4. **After reconnection, resume by discovering existing work:**
+   - Call `list_documents()` to see all your documents and projects.
+   - Call `list_documents(group="project-name")` to find documents in a specific project.
+   - Call `use_document(document_id="...")` to set context on an existing document.
+   - Call `pull_plan(document_id="...")` to get the latest content and any human feedback.
+   - Pass `group` again on the next `push_plan` to re-associate with the project (session group resets on reconnect).
+   - For a brand new task: just call `push_plan` without `document_id` as usual.
+
+**Key point:** A 404 from the MCP endpoint means "stale session, re-initialize" — it does NOT mean the server is unreachable. The MCP client should retry without a session ID and a new session will be created automatically.
