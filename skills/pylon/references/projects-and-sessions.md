@@ -42,7 +42,14 @@ The Pylon MCP server uses in-memory sessions. Sessions are lost when:
 - The conversation is cleared (`/clear`) or compacted (`/compact`)
 - The session TTL (1 hour) expires
 
-**When you get a connection error or 404 on `/api/mcp`:**
+**Stale session auto-recovery:**
+
+The server handles expired sessions gracefully — no HTTP 404 errors that break the MCP client:
+
+- **`initialize` requests** with a stale session ID automatically create a new session. The client picks up the new session ID from the response header.
+- **Tool calls** (e.g. `push_plan`, `pull_plan`) with a stale session ID receive a JSON-RPC error (code -32001, "Session expired") instead of HTTP 404. This allows the MCP client to surface the error normally and re-initialize.
+
+**When you get a session-expired error:**
 
 1. **Do NOT panic or tell the user the server is down.** This is normal after `/clear`, `/compact`, or a deploy.
 2. **The MCP client should automatically re-initialize** a new session. If it doesn't, ask the user to run `/mcp` to restart the MCP connection.
@@ -54,5 +61,3 @@ The Pylon MCP server uses in-memory sessions. Sessions are lost when:
    - Call `pull_plan(document_id="...")` to get the latest content and any human feedback.
    - Pass `group` again on the next `push_plan` to re-associate with the project (session group resets on reconnect).
    - For a brand new task: just call `push_plan` without `document_id` as usual.
-
-**Key point:** A 404 from the MCP endpoint means "stale session, re-initialize" — it does NOT mean the server is unreachable. The MCP client should retry without a session ID and a new session will be created automatically.

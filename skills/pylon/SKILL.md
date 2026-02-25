@@ -88,4 +88,4 @@ See `references/multi-agent-teams.md` for team/swarm coordination.
 - **Session locking** prevents terminal session conflicts (30-min TTL). See `references/projects-and-sessions.md`.
 - **Web editing guard** blocks terminal pushes while a human is editing (5-min TTL). Human is never locked out.
 - **Code reviews** use side-by-side Monaco diffs with line-specific threaded comments. See `references/code-review-workflow.md`.
-- **Connection recovery**: MCP sessions are in-memory — lost after `/clear`, `/compact`, or deploy. Resume by calling `list_documents()` to find existing work, then `use_document()` to restore context. See `references/projects-and-sessions.md`.
+- **Connection recovery**: MCP sessions are in-memory — lost after `/clear`, `/compact`, or deploy. The server auto-recovers stale sessions: `initialize` requests transparently create a new session; tool calls return a JSON-RPC error prompting re-initialization (no HTTP 404). Resume by calling `list_documents()` to find existing work, then `use_document()` to restore context. See `references/projects-and-sessions.md`.
