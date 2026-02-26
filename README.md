@@ -2,6 +2,10 @@
 
 **Stop pushing AI hallucinations to your repo.** Review AI-generated plans and code *before* they hit GitHub.
 
+```bash
+npx skills add weave-ai-dev/agent-skills
+```
+
 ---
 
 ## The Problem
