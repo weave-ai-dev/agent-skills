@@ -37,7 +37,7 @@ When a human is actively editing in the web UI, terminal pushes are blocked to p
 
 ## MCP Connection Recovery
 
-The Pylon MCP server uses in-memory sessions. Sessions can be lost when:
+The Weave MCP server uses in-memory sessions. Sessions can be lost when:
 - The server restarts or redeploys
 - The conversation is cleared (`/clear`) or compacted (`/compact`)
 - The session TTL (1 hour) expires with no requests

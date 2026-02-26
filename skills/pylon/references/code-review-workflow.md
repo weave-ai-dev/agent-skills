@@ -1,6 +1,6 @@
 # Code Review Workflow
 
-After a plan is approved, agents write code and push file diffs back to Pylon for human review. Humans review in a read-only Monaco editor with line-specific threaded comments.
+After a plan is approved, agents write code and push file diffs back to Weave for human review. Humans review in a read-only Monaco editor with line-specific threaded comments.
 
 ## Lifecycle
 

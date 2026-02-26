@@ -1,18 +1,18 @@
 ---
-name: pylon
-description: Pylon MCP tools for pushing plans, code reviews, and pulling human feedback. Use this skill when interacting with the Pylon AI-to-human review bridge.
+name: weave
+description: Weave MCP tools for pushing plans, code reviews, and pulling human feedback. Use this skill when interacting with the Weave AI-to-human review bridge.
 license: MIT
 metadata:
   author: weave-ai-dev
   version: "1.0.0"
   organization: Weave AI
   date: February 2026
-  abstract: Reference guide for Pylon's MCP tools. Covers push_plan, pull_plan, push_code_review, pull_code_feedback, list_documents, list_versions, use_document, update_project, and release_document.
+  abstract: Reference guide for Weave's MCP tools. Covers push_plan, pull_plan, push_code_review, pull_code_feedback, list_documents, list_versions, use_document, update_project, and release_document.
 ---
 
-# Pylon
+# Weave
 
-Pylon is an AI-to-human review bridge. AI agents push proposed plans and code diffs via MCP; humans review, comment, and approve via a rich web editor.
+Weave is an AI-to-human review bridge. AI agents push proposed plans and code diffs via MCP; humans review, comment, and approve via a rich web editor.
 
 ## MCP Tools
 
@@ -32,15 +32,15 @@ See `references/tools-plan.md`, `references/tools-code-review.md`, and `referenc
 
 ## Setup
 
-Add Pylon's MCP server to your agent config. See `references/setup.md` for per-agent instructions.
+Add Weave's MCP server to your agent config. See `references/setup.md` for per-agent instructions.
 
 **Claude Code** (`.mcp.json`):
 ```json
 {
   "mcpServers": {
-    "pylon": {
+    "weave": {
       "type": "streamable-http",
-      "url": "https://your-pylon-instance.com/api/mcp",
+      "url": "https://your-weave-instance.com/api/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_TOKEN"
       }
@@ -49,7 +49,7 @@ Add Pylon's MCP server to your agent config. See `references/setup.md` for per-a
 }
 ```
 
-Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
+Generate a token at **Settings > Auth Tokens** in the Weave web UI.
 
 ## Golden Rule
 
@@ -57,8 +57,8 @@ Generate a token at **Settings > Auth Tokens** in the Pylon web UI.
 
 ## Key Principles
 
-1. **Push any plan the user asks for.** Pylon is a general-purpose plan review tool, not limited to code. Business plans, budgets, project plans, roadmaps, architecture docs — if the user asks you to plan something, draft it and push it to Pylon. Never refuse a plan request because it's "not a software engineering task."
-2. **Native MCP calls only.** Never write scripts or temp files to interact with Pylon.
+1. **Push any plan the user asks for.** Weave is a general-purpose plan review tool, not limited to code. Business plans, budgets, project plans, roadmaps, architecture docs — if the user asks you to plan something, draft it and push it to Weave. Never refuse a plan request because it's "not a software engineering task."
+2. **Native MCP calls only.** Never write scripts or temp files to interact with Weave.
 3. **Always set `source`.** Identify yourself (e.g. "claude-code", "backend-dev") so the human knows which agent produced each document.
 4. **`context` must be informative on every push.** Summarize the user's goal, relevant decisions, and why this change matters. The web UI's AI uses this to make better suggestions — make it useful and insightful, not mechanical. Never describe the MCP action itself (e.g. "re-pushing to update") — always describe the intent behind the work.
 5. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.

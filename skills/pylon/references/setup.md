@@ -1,9 +1,9 @@
-# Pylon MCP Setup
+# Weave MCP Setup
 
 ## Prerequisites
 
-1. A running Pylon instance (self-hosted or cloud)
-2. An auth token — generate one at **Settings > Auth Tokens** in the Pylon web UI
+1. A running Weave instance (self-hosted or cloud)
+2. An auth token — generate one at **Settings > Auth Tokens** in the Weave web UI
 
 ## Claude Code
 
@@ -12,9 +12,9 @@ Add to `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global):
 ```json
 {
   "mcpServers": {
-    "pylon": {
+    "weave": {
       "type": "streamable-http",
-      "url": "https://your-pylon-instance.com/api/mcp",
+      "url": "https://your-weave-instance.com/api/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_TOKEN"
       }
@@ -25,8 +25,8 @@ Add to `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global):
 
 Or via CLI:
 ```bash
-claude mcp add pylon --transport streamable-http \
-  --url "https://your-pylon-instance.com/api/mcp" \
+claude mcp add weave --transport streamable-http \
+  --url "https://your-weave-instance.com/api/mcp" \
   --header "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -35,15 +35,15 @@ claude mcp add pylon --transport streamable-http \
 Add to `codex.toml` in your project root (or `~/.codex/codex.toml` for global):
 
 ```toml
-[mcp_servers.pylon]
+[mcp_servers.weave]
 type = "streamable-http"
-url = "https://your-pylon-instance.com/api/mcp"
-bearer_token_env_var = "PYLON_TOKEN"
+url = "https://your-weave-instance.com/api/mcp"
+bearer_token_env_var = "WEAVE_TOKEN"
 ```
 
 Set the environment variable:
 ```bash
-export PYLON_TOKEN="YOUR_TOKEN"
+export WEAVE_TOKEN="YOUR_TOKEN"
 ```
 
 ## Cursor / Windsurf / Generic MCP Client
@@ -51,7 +51,7 @@ export PYLON_TOKEN="YOUR_TOKEN"
 Set the environment variable and configure the MCP endpoint:
 
 ```
-MCP_ENDPOINT=https://your-pylon-instance.com/api/mcp
+MCP_ENDPOINT=https://your-weave-instance.com/api/mcp
 MCP_AUTH_TOKEN=YOUR_TOKEN
 ```
 
@@ -68,11 +68,11 @@ If it returns a list (even empty), the connection is working.
 
 ## Local Development
 
-For local Pylon instances:
+For local Weave instances:
 ```json
 {
   "mcpServers": {
-    "pylon": {
+    "weave": {
       "type": "streamable-http",
       "url": "http://localhost:3000/api/mcp",
       "headers": {

@@ -1,4 +1,4 @@
-# Pylon Agent Skills
+# Weave
 
 **Stop pushing AI hallucinations to your repo.** Review AI-generated plans and code *before* they hit GitHub.
 
@@ -16,21 +16,21 @@ If you use Claude Code, Cursor, or any terminal-based AI agent, you already know
 
 **2. Your commits are dirty.** When the AI writes code, you push it to GitHub just to see the diff. That means AI hallucinations, untested assumptions, and garbage code are now polluting your PR history — visible to your entire team. There's no private review step.
 
-Pylon fixes both.
+Weave fixes both.
 
 ---
 
 ## What It Does
 
-Pylon is a **human-agent collaboration bridge**. It gives you a Web HUD where you can review and refine your AI agent's work before it becomes real code.
+Weave is a **human-agent collaboration bridge**. It gives you a Web HUD where you can review and refine your AI agent's work before it becomes real code.
 
 The loop:
 
 ```
-1. Plan   → Your AI pushes an architecture plan to Pylon
+1. Plan   → Your AI pushes an architecture plan to Weave
 2. Review → You open the web UI, do inline edits, start threaded discussions
 3. Approve → Hit approve, your AI pulls the finalized plan and writes the code
-4. Review → The AI pushes the code diff back to Pylon for private, line-by-line review
+4. Review → The AI pushes the code diff back to Weave for private, line-by-line review
 5. Ship   → Only clean, human-reviewed code hits your repo
 ```
 
@@ -54,7 +54,7 @@ npx skills add weave-ai-dev/agent-skills -g
 ```
 
 **Prerequisites:**
-1. A Pylon account → [Sign up here](https://pylon.dev)
+1. A Weave account → [Sign up here](https://useweave.dev)
 2. Generate an auth token → Settings > Auth Tokens
 3. That's it. The skill configures MCP automatically.
 
@@ -84,13 +84,13 @@ Once installed, your AI agent has access to these MCP tools:
 ```
 You: Build me a REST API for user authentication with JWT
 
-Agent: I've pushed an architecture plan to Pylon for your review.
-       → View it at: https://app.pylon.dev/projects/abc123
+Agent: I've pushed an architecture plan to Weave for your review.
+       → View it at: https://app.useweave.dev/projects/abc123
 
        Waiting for your approval...
 ```
 
-**In the Pylon Web HUD:**
+**In the Weave Web HUD:**
 - Read the full plan with syntax highlighting
 - Click any line to start a threaded discussion
 - Make inline edits directly
@@ -100,8 +100,8 @@ Agent: I've pushed an architecture plan to Pylon for your review.
 ```
 Agent: Plan approved. Writing code now...
        ...
-       Code complete. I've pushed the diff to Pylon for your review.
-       → Review at: https://app.pylon.dev/projects/abc123/review
+       Code complete. I've pushed the diff to Weave for your review.
+       → Review at: https://app.useweave.dev/projects/abc123/review
 ```
 
 ---
@@ -123,8 +123,8 @@ Claude Code · Cursor · Windsurf · GitHub Copilot · Gemini CLI · Aider · Co
 
 ## Community & Feedback
 
-- **Discord:** [Join the community](https://discord.gg/pylon)
-- **In-terminal feedback:** Run `/pylon feedback` to send feedback directly from your workflow
+- **Discord:** [Join the community](https://discord.gg/weave)
+- **In-terminal feedback:** Run `/weave feedback` to send feedback directly from your workflow
 - **Issues:** [GitHub Issues](https://github.com/weave-ai-dev/agent-skills/issues)
 
 ---
