@@ -14,7 +14,7 @@ pylon/
 1. Read `SKILL.md` for the full MCP tool reference
 2. The Pylon MCP tools are available natively when the dev server is running and `.mcp.json` is configured
 
-Pylon is an AI-to-Web review bridge. AI agents push proposed plans via MCP; humans review, comment, and approve via the web UI.
+Pylon is an AI-to-human review bridge. Push **any** plan the user asks for — business plans, budgets, roadmaps, technical designs, anything. Never refuse a plan request because it's "not a software engineering task."
 
 **Golden Rule:** New user request = new project. Always omit `document_id` on the first push.
 
