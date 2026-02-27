@@ -10,7 +10,7 @@ npx skills add weave-ai-dev/agent-skills
 
 ## The Problem
 
-If you use Claude Code, Cursor, or any terminal-based AI agent, you already know these two pain points:
+If you use Claude Code, Codex, or any terminal-based AI agent, you already know these two pain points:
 
 **1. You can't review AI plans.** Your agent generates a 300-line architecture plan in the CLI. You can't open a thread on line 42. You can't drill into a specific decision. Your only option is to copy-paste snippets back into the terminal and argue. It's slow, lossy, and painful.
 
