@@ -34,9 +34,14 @@ See `references/tools-plan.md`, `references/tools-code-review.md`, and `referenc
 
 Add Weave's MCP server to your agent config. See `references/setup.md` for per-agent instructions. Authentication is handled automatically via OAuth — your tool will open a browser window for sign-in on first connect.
 
-**Claude Code** (CLI):
+**Claude Code** (CLI — available across all projects):
 ```bash
-claude mcp add --transport http weave https://weave-dev.com/api/mcp
+claude mcp add --transport http --scope user weave https://weave-dev.com/api/mcp
+```
+
+**Claude Code** (CLI — current project only):
+```bash
+claude mcp add --transport http --scope project weave https://weave-dev.com/api/mcp
 ```
 
 **Claude Code** (`.mcp.json`):
@@ -75,6 +80,7 @@ claude mcp add --transport http weave https://weave-dev.com/api/mcp
 4. **`context` must be informative on every push.** Summarize the user's goal, relevant decisions, and why this change matters. The web UI's AI uses this to make better suggestions — make it useful and insightful, not mechanical. Never describe the MCP action itself (e.g. "re-pushing to update") — always describe the intent behind the work.
 5. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.
 6. **Always pass `document_id` explicitly** on `pull_plan`, `push_plan` (updates), and `pull_code_feedback`. Do not rely on the session remembering your current document — sessions can be lost.
+7. **Subagents cannot call MCP tools.** Only the lead/main agent has MCP access. If you are a subagent (teammate), send your plan or code review content back to the lead agent via `SendMessage` and ask them to push it to Weave on your behalf. Never attempt to call Weave tools directly from a subagent — it will fail.
 
 ## Quick Workflow
 
