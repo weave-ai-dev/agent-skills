@@ -2,16 +2,16 @@
   "name": "weave-agent-skills",
   "owner": {
     "name": "Weave AI",
-    "email": "support@weave-ai.dev"
+    "url": "https://github.com/weave-ai-dev"
   },
   "metadata": {
-    "description": "Official Pylon agent skills for AI-to-human review workflows",
+    "description": "Official Weave agent skills for AI-to-human review workflows",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "pylon",
-      "description": "Pylon MCP tools for pushing plans, code reviews, and pulling human feedback. Use when interacting with the Pylon review bridge.",
+      "name": "weave",
+      "description": "Weave MCP tools for pushing plans, code reviews, and pulling human feedback. Use when interacting with the Weave review bridge.",
       "source": "./",
       "strict": false,
       "skills": ["./skills/pylon"]
