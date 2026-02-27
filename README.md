@@ -55,8 +55,7 @@ npx skills add weave-ai-dev/agent-skills -g
 
 **Prerequisites:**
 1. A Weave account → [Sign up here](https://useweave.dev)
-2. Generate an auth token → Settings > Auth Tokens
-3. That's it. The skill configures MCP automatically.
+2. That's it. OAuth handles authentication automatically — your tool opens a browser to sign in on first connect.
 
 ---
 

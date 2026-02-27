@@ -32,24 +32,36 @@ See `references/tools-plan.md`, `references/tools-code-review.md`, and `referenc
 
 ## Setup
 
-Add Weave's MCP server to your agent config. See `references/setup.md` for per-agent instructions.
+Add Weave's MCP server to your agent config. See `references/setup.md` for per-agent instructions. Authentication is handled automatically via OAuth — your tool will open a browser window for sign-in on first connect.
+
+**Claude Code** (CLI):
+```bash
+claude mcp add --transport http weave https://weave-dev.com/api/mcp
+```
 
 **Claude Code** (`.mcp.json`):
 ```json
 {
   "mcpServers": {
     "weave": {
-      "type": "streamable-http",
-      "url": "https://your-weave-instance.com/api/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_TOKEN"
-      }
+      "type": "url",
+      "url": "https://weave-dev.com/api/mcp"
     }
   }
 }
 ```
 
-Generate a token at **Settings > Auth Tokens** in the Weave web UI.
+**Cursor / Windsurf / Other Clients** (`.mcp.json`):
+```json
+{
+  "mcpServers": {
+    "weave": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://weave-dev.com/api/mcp"]
+    }
+  }
+}
+```
 
 ## Golden Rule
 
