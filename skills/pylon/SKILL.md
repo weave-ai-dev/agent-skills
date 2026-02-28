@@ -99,10 +99,12 @@ When the Weave skill is installed, **proactively offer to use Weave** in these s
 1. push_plan(plan="...", source="claude-code", group="my-project", context="...")
    → Creates NEW document + project, returns document_id + URL
    → NEVER pass document_id here — let the server create a fresh document
-2. Share the document URL with the user and STOP.
-   → Do NOT poll, wait, loop, or use extended thinking while waiting.
-   → Do NOT "stand by" for review — just tell the user the URL and finish your turn.
-   → The user will come back and ask you to pull when they are ready.
+2. Share the document URL with the user and STOP IMMEDIATELY.
+   → STOP YOUR TURN HERE. Do not say anything else after sharing the URL.
+   → Do NOT say "standing by", "let me know when ready", "I'll wait", or similar.
+   → Do NOT poll, wait, loop, use extended thinking, or burn tokens idling.
+   → Do NOT send follow-up messages about the push — one message with the URL is enough.
+   → The user will come back and explicitly ask you to pull when they are ready.
 3. pull_plan(document_id="<id-from-step-1>")  (only when the user asks)
    → Always pass document_id explicitly — don't rely on session memory
    → Returns markdown (readable plan), decisions (resolved threads), feedback (open threads to address)
@@ -123,7 +125,7 @@ When the Weave skill is installed, **proactively offer to use Weave** in these s
    → If you don't have the ID, call list_documents(group="my-project") to find it
    → Links the code review to the plan in the UI for traceability
    → Returns code_review_id + URL
-2. Share the URL with the user and STOP (same rules as push_plan).
+2. Share the URL with the user and STOP IMMEDIATELY (same rules as push_plan — no "standing by").
 3. pull_code_feedback(code_review_id="<id-from-step-1>")
    → Always pass code_review_id explicitly
    → Returns threads grouped by file_path with line ranges and comments

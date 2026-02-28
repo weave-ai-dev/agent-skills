@@ -23,7 +23,10 @@ Never write scripts, curl commands, or workarounds to call MCP from subagents.
 3. Lead agent collects results and pushes to Weave:
    push_plan(plan="...", source="team-lead", group="auth-refactor", context="...")
    → Returns document_id + URL
-4. Share URL with user and STOP
+4. Share URLs with user and STOP IMMEDIATELY
+   → Do NOT say "standing by", "agents are idle", or "let me know when ready"
+   → Do NOT send follow-up messages — one message with the URLs is enough
+   → Shut down idle subagents to stop burning tokens
 ```
 
 ### Multiple documents (one per subagent's work)
