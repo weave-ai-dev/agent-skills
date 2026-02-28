@@ -14,7 +14,7 @@
       "description": "Weave MCP tools for pushing plans, code reviews, and pulling human feedback. Use when interacting with the Weave review bridge.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/pylon"]
+      "skills": ["./skills/weave"]
     }
   ]
 }

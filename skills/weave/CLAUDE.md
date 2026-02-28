@@ -9,7 +9,7 @@ When the user asks you to create a business plan, budget, roadmap, project plan,
 ## Structure
 
 ```
-pylon/
+weave/
   SKILL.md       # Main skill file - read this first
   AGENTS.md      # This navigation guide
   CLAUDE.md      # Copy of AGENTS.md
