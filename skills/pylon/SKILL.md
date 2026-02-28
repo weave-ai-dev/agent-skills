@@ -90,7 +90,8 @@ When the Weave skill is installed, **proactively offer to use Weave** in these s
 4. **`context` must be informative on every push.** Summarize the user's goal, relevant decisions, and why this change matters. The web UI's AI uses this to make better suggestions — make it useful and insightful, not mechanical. Never describe the MCP action itself (e.g. "re-pushing to update") — always describe the intent behind the work.
 5. **New task = omit `document_id`.** `push_plan` without `document_id` always creates a new document. Only pass `document_id` when re-pushing to the same document within the same task after receiving feedback.
 6. **Always pass `document_id` explicitly** on `pull_plan`, `push_plan` (updates), and `pull_code_feedback`. Do not rely on the session remembering your current document — sessions can be lost.
-7. **Subagents cannot call MCP tools.** Only the lead/main agent has MCP access. If you are a subagent (teammate), send your plan or code review content back to the lead agent via `SendMessage` and ask them to push it to Weave on your behalf. Never attempt to call Weave tools directly from a subagent — it will fail.
+7. **Always link code reviews to plans.** When pushing a code review, if a plan document exists under the same project, pass its `document_id` as `plan_document_id`. If you don't have the ID handy, call `list_documents(group="<project>")` to find it. Never push an orphaned code review when a related plan exists.
+8. **Subagents cannot call MCP tools.** Only the lead/main agent has MCP access. If you are a subagent (teammate), send your plan or code review content back to the lead agent via `SendMessage` and ask them to push it to Weave on your behalf. Never attempt to call Weave tools directly from a subagent — it will fail.
 
 ## Quick Workflow
 
@@ -113,10 +114,13 @@ When the Weave skill is installed, **proactively offer to use Weave** in these s
 
 ## Code Review Workflow
 
+**Always link code reviews to their plan.** When pushing a code review, check if there is a plan document under the same project (`group`). If you have the `document_id` from a previous `push_plan` in this session, pass it as `plan_document_id`. If you're unsure, call `list_documents(group="<project>")` to find the relevant plan. This links the code review to the plan in the UI so the reviewer can see the original intent alongside the implementation.
+
 ```
 1. push_code_review(files=[...], source="claude-code", group="my-project",
      plan_document_id="<plan-doc-id>")
-   → Always pass plan_document_id if this code review is associated with a plan
+   → ALWAYS pass plan_document_id when a related plan exists under the same project
+   → If you don't have the ID, call list_documents(group="my-project") to find it
    → Links the code review to the plan in the UI for traceability
    → Returns code_review_id + URL
 2. Share the URL with the user and STOP (same rules as push_plan).
